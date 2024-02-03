@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "name": "@aminnairi/database",
+  "description": "Database engine for Node.js written in TypeScript",
+  "main": "src/index.ts"
+}
