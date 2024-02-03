@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-npm install aminnairi/ndb
+npm install aminnairi/microdatabase
 ```
 
 ## Usage
