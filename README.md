@@ -9,27 +9,29 @@ npm install aminnairi/microdatabase
 ## Usage
 
 ```typescript
-import { createDatabase } from "@aminnairi/microdatabase";
+import { InMemoryPersistence, createDatabase } from "../src";
 import { randomUUID } from "crypto";
 
 type Database = {
   users: {
     id: string,
     email: string,
-    password: string
+    username: string
   }
 }
 
-const { add, all } = createDatabase<Database>({
-  users: []
+const { persist, all, add } = await createDatabase<Database>({
+  persistence: new InMemoryPersistence<Database>({
+    users: []
+  })
 });
 
 add({
   table: "users",
   data: {
     id: randomUUID(),
-    email: "you@home.com",
-    password: "sup3rs3cr3tp4ssw0rd"
+    email: "email@domain.com",
+    username: "user123"
   }
 });
 
@@ -38,4 +40,6 @@ const users = all({
 });
 
 console.log(users);
+
+await persist();
 ```
