@@ -12,8 +12,18 @@ export type InitialDatabaseData<GenericDatabaseSchema extends DatabaseSchema> = 
   }>
 }
 
-export const createDatabase = <GenericDatabaseSchema extends DatabaseSchema>(initialData: InitialDatabaseData<GenericDatabaseSchema>) => {
+export interface PersistenceInterface<GenericDatabaseSchema extends DatabaseSchema> {
+  persist<GenericData extends InitialDatabaseData<GenericDatabaseSchema>>(data: GenericData): Promise<boolean>,
+  getInitialData(): Promise<InitialDatabaseData<GenericDatabaseSchema>>;
+}
+
+export const createDatabase = async <GenericDatabaseSchema extends DatabaseSchema>({ persistence }: { persistence: PersistenceInterface<GenericDatabaseSchema> }) => {
+  let initialData = await persistence.getInitialData();
+
   return {
+    persist: () => {
+      return persistence.persist(initialData);
+    },
     all: <Table extends keyof GenericDatabaseSchema>({ table }: { table: Table }): Array<GenericDatabaseSchema[Table]> => {
       return initialData[table] as Array<GenericDatabaseSchema[Table]>;
     },
