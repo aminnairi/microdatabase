@@ -69,6 +69,19 @@ export const createDatabase = async <GenericDatabaseSchema extends DatabaseSchem
     },
   };
 };
+
+export class InMemoryPersistence<GenericDatabaseSchema extends DatabaseSchema> implements PersistenceInterface<GenericDatabaseSchema> {
+  public constructor(private readonly initialData: InitialDatabaseData<GenericDatabaseSchema>) { }
+
+  public async persist<GenericData extends InitialDatabaseData<GenericDatabaseSchema>>(data: GenericData) {
+    return true; 
+  }
+
+  public async getInitialData(): Promise<InitialDatabaseData<GenericDatabaseSchema>> {
+    return this.initialData; 
+  }
+}
+
 export class FilePersistence<GenericDatabaseSchema extends DatabaseSchema> implements PersistenceInterface<GenericDatabaseSchema> {
   public constructor(private readonly path: string) {}
 
