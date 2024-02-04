@@ -3,5 +3,8 @@
   "name": "@aminnairi/database",
   "description": "Database engine for Node.js written in TypeScript",
   "version": "0.1.0",
-  "main": "src/index.ts"
+  "main": "src/index.ts",
+  "devDependencies": {
+    "@types/node": "20.11.16"
+  }
 }
