@@ -1,3 +1,5 @@
+import { writeFile, readFile } from "fs/promises";
+
 export type DatabaseTable = {
   [key: string]: string | number | boolean
 }
@@ -67,3 +69,18 @@ export const createDatabase = async <GenericDatabaseSchema extends DatabaseSchem
     },
   };
 };
+export class FilePersistence<GenericDatabaseSchema extends DatabaseSchema> implements PersistenceInterface<GenericDatabaseSchema> {
+  public constructor(private readonly path: string) {}
+
+  public async persist<GenericData extends InitialDatabaseData<GenericDatabaseSchema>>(data: GenericData) {
+    await writeFile(this.path, JSON.stringify(data));
+
+    return true;
+  }
+
+  public async getInitialData(): Promise<InitialDatabaseData<GenericDatabaseSchema>> {
+    const buffer = await readFile(this.path);
+
+    return JSON.parse(buffer.toString());
+  }
+}
